@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?><!--xml的版本号-->
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd"><!--当前xml的dtd约束，约束文件内容-->
+<!--xml配置内容-->
+<configuration>
+    <!--引入其它配置文件（jdbc连接数据参数，以路径形式引入）-->
+    <properties resource="jdbc.properties"></properties>
+    <!--引入其它配置文件（jdbc连接数据参数，在电脑F盘中以路径形式引入）-->
+    <!-- <properties resource="F:/jdbc.properties"></properties>-->
+    <!--设置类型别名-->
+    <typeAliases>
+        <!--<typeAlias type="com.j2103.pojo.User" alias="user"></typeAlias>-->
+        <package name="com.j2103.pojo"/>  <!--把当前包中的所有类的小写当做别名-->
+    </typeAliases>
+
+    <!--配置SqlSessionFactory环境-->
+    <environments default="development"><!--选择配置(环境)-->
+        <!--开发模式（环境）-->
+        <environment id="development">
+            <!--事务的管理
+            JDBC ：使用JDBC的事务管理
+            MANAGED ：放弃事务管理（由其他事务管理，如springAOP事务管理）-->
+            <transactionManager type="JDBC"/>
+           <!-- 数据配置
+            UNPOOLED 不使用连接池
+            POOLED 使用mybatis提供的默认连接池
+            JNDI 自定义连接池，一般在web容器中使用，主要通过在web容器（tomcat，jbos）中配置数据-->
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+
+        <!--测试环境-->
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!--在核心配置中引入映射配置-->
+    <mappers>
+        <!--引入一个映射文件，xml映射文件的配置-->
+        <mapper resource="mapper/UserMapper.xml"></mapper>
+        <!--<mapper resource="mapper/managerMapper.xml"></mapper>-->
+        <!--<mapper resource="mapper/*.xml"></mapper>-->
+        <!--<mapper resource="org/mybatis/example/BlogMapper.xml"/>-->
+
+        <!--注解的配置-->
+        <!--映射文件和接口的名字一致,路径一致,就可以直接引入name属性值表示的包下的全部映射文件-->
+        <!--<package name="com.j2103.mapper"/>-->  <!--把包下面的接口引入-->
+    </mappers>
+</configuration>
